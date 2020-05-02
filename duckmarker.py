@@ -153,7 +153,7 @@ def loadGUI():
 
     root = tk.Tk()
     root.protocol("WM_DELETE_WINDOW", quitDm)
-    root.title("Duckmarker")
+    root.title("DuckMarker")
     root.minsize(392,135)
     root.resizable(width=False, height=False)
 
