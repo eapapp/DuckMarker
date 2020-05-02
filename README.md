@@ -20,7 +20,7 @@ DuckMarker is a utility for generating Cyberduck bookmarks that point to CSCS co
  - The container needs to be created before you start using the bookmark.
 
 ## How to run the Python file
- - Make sure you have Python or Anaconda on your computer. No external packages or installation needed for DuckMarker to run.
+ - Make sure you have Python or Anaconda on your computer. No external packages or installation needed for running DuckMarker.
  - Download and extract ***DuckMarker.zip***.
  - Windows: double-click ***DuckMarker.bat***
  - Mac: double-click ***DuckMarker.sh***
