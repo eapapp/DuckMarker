@@ -15,16 +15,16 @@ from datetime import datetime
 mainpane = None
 optvar = None
 
-SPdict = {"SP1                        ": "bp00sp01",
-          "SP2                        ": "bp00sp02",
-          "SP3                        ": "bp00sp03",
-          "SP4                        ": "bp00sp04",
-          "SP5                        ": "bp00sp05",
-          "SP6                        ": "bp00sp06",
-          "SP8                        ": "bp00sp08",
-          "covid19                ": "covid19",
-          "External                ": "bp00ext",       
-          "EBRAINS               ": "ebrain01"}
+SPdict = {"SP1": "bp00sp01",
+          "SP2": "bp00sp02",
+          "SP3": "bp00sp03",
+          "SP4": "bp00sp04",
+          "SP5": "bp00sp05",
+          "SP6": "bp00sp06",
+          "SP8": "bp00sp08",
+          "covid19": "covid19",
+          "External": "bp00ext",       
+          "EBRAINS": "ebrain01"}
 
 xmldict = {"Protocol": "swift",
             "Provider": "keystone3",
@@ -47,21 +47,70 @@ def getContainer():
     cont = mainpane.nametowidget('txtContainer')
     cname = cont.get()
 
-    if not cname[0] == '/':
+    if len(cname) > 0 and not cname[0] == '/':
         cname = '/' + cname
 
     return cname
 
 
+def checkSpaces(user, container):
+
+    error = False
+
+    if len(user) == 0:
+        messagebox.showwarning('Error - Invalid user name', 'Please fill in your CSCS user name.')
+        error = True
+
+    elif ' ' in user:
+        messagebox.showwarning('Error - Invalid user name', 'You have a space in your user name. Please check again.')
+        error = True
+
+
+    if len(container) == 0:
+        messagebox.showwarning('Error - Invalid container name', 'Please fill in the CSCS container name.')
+        error = True
+
+    elif ' ' in container:
+        messagebox.showwarning('Error - Invalid container name', 'You have a space in the container name. Please check again.')
+        error = True
+
+    if error:
+        return True
+    
+    return False
+
+
+def valid(prj, usr, cont):
+
+    if prj == '...':
+        messagebox.showwarning('Error - Invalid subproject', 'Please select a subproject.')
+        return False
+
+    # if len(usr) == 0 or len(cont) == 0:
+    #     return False
+
+    if checkSpaces(usr,cont):
+        return False
+
+    return True
+
 def exportDm(root):
 
     global xmldict
 
-    usr = mainpane.nametowidget('txtUser')
+    opt = optvar.get()
+    usrobj = mainpane.nametowidget('txtUser')
+    usr = usrobj.get().strip()
+    cont = getContainer().strip()
+
+    if not valid(opt, usr, cont):
+        return
+
+    prj = SPdict[opt]
 
     xmldict["UUID"] = str(uuid.uuid4())
-    xmldict["Username"] = SPdict[optvar.get()] + ":cscs:" + usr.get()
-    xmldict["Path"] = getContainer()
+    xmldict["Username"] = prj + ":cscs:" + usr
+    xmldict["Path"] = cont
     xmldict["Nickname"] = xmldict["Path"][1:]
     xmldict["Access Timestamp"] = str(int(datetime.timestamp(datetime.now())*1000))
 
@@ -105,7 +154,8 @@ def loadGUI():
     root = tk.Tk()
     root.protocol("WM_DELETE_WINDOW", quitDm)
     root.title("Duckmarker")
-    root.minsize(293,131)
+    root.minsize(392,135)
+    root.resizable(width=False, height=False)
 
     mainpane = tk.Frame(root, padx="10", pady="10")
     mainpane.grid(row=0, column=0, sticky="NEWS")
@@ -125,13 +175,14 @@ def loadGUI():
     optvar = tk.StringVar(root)
     optvar.set("")
 
-    optSP = ttk.OptionMenu(mainpane, optvar, "...                        ", *tuple(SPdict.keys()))
+    optSP = ttk.OptionMenu(mainpane, optvar, "...", *tuple(SPdict.keys()))
+    optSP.config(width=30)
     optSP.grid(row=0, column=1, sticky="EW")
         
-    txtUser = tk.Entry(mainpane, name="txtUser")
+    txtUser = tk.Entry(mainpane, name="txtUser", width=36)
     txtUser.grid(row=1, column=1, sticky="NW")
 
-    txtContainer = tk.Entry(mainpane, name="txtContainer")
+    txtContainer = tk.Entry(mainpane, name="txtContainer", width=36)
     txtContainer.grid(row=2, column=1, sticky="NW")    
 
     btnpane = tk.Frame(root, padx="10", pady="10")
