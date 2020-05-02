@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>Protocol</key>
+		<string>swift</string>
+		<key>Provider</key>
+		<string>keystone3</string>
+		<key>Nickname</key>
+		<string>hbp_d000xx_example_example</string>
+		<key>UUID</key>
+		<string>7ce1e222-d220-44d5-ad51-1789b870e839</string>
+		<key>Hostname</key>
+		<string>ksproxy.cscs.ch</string>
+		<key>Port</key>
+		<string>13000</string>
+		<key>Username</key>
+		<string>bp00ext:cscs:bp000xxx</string>
+		<key>Path</key>
+		<string>/hbp_d000xx_example_example</string>
+		<key>Access Timestamp</key>
+		<string>1588447129571</string>
+	</dict>
+</plist>
