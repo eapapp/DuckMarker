@@ -1,7 +1,178 @@
+<!DOCTYPE HTML>
 <html>
-  <head>
-  </head>
-  <body>
-    <h1>Test</h1>
-  </body>
+    <head>
+        <title>Duckmarker - Generate your CSCS bookmark for Cyberduck</title>        
+        <style>
+            * {
+              box-sizing: border-box;
+              font-family: Inter, Helvetica, Arial, sans-serif;
+            }
+            body {
+                padding-top: 50px;
+                background-color: darkslateblue;
+            }
+            input[type=text] {
+              width: 100%;
+              padding: 6px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              resize: vertical;
+            }
+            input[type=submit] {
+              background-color: #fecd07;
+              color: black;
+              font-size: 0.95em;
+              font-weight: bold;
+              padding: 12px 100px;
+              border: 1px solid orange;
+              border-radius: 5px;
+              cursor: pointer;
+              margin-right: 10px;
+              margin-top: 20px;
+              margin-bottom: 10px;
+              float: none;
+            }      
+            input[type=submit]:hover {
+              background-color: orange;
+            }
+            .container {
+              border-radius: 5px;
+              background-color: #f2f2f2;
+              padding: 25px;
+              margin: auto;
+            }        
+            .col-40 {
+              float: left;
+              width: 40%;
+              margin-top: 6px;
+            }        
+            .col-60 {
+              float: left;
+              width: 60%;
+              margin-top: 6px;
+            }    
+            /* Clear floats after the columns */
+            .row:after {
+              content: "";
+              display: table;
+              clear: both;
+            }
+            p, h3{
+              margin: 16px;
+            }
+            b{
+              font-size: 1.1em;
+            }
+        </style>
+        <script>
+
+            function uuidv4() {
+                return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+                );
+            }
+
+            function getProject(){
+                let SPdict = {"SP1":"bp00sp01",
+                              "SP2":"bp00sp02",
+                              "SP3":"bp00sp03",
+                              "SP4":"bp00sp04",
+                              "SP5":"bp00sp05",
+                              "SP6":"bp00sp06",
+                              "SP8":"bp00sp08",
+                              "External":"bp00ext"
+                            };
+                let SPname = document.getElementById("sp").value;
+                return SPdict[SPname];
+            }
+
+            function genXML(){
+
+                let xml=`<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>Protocol</key>
+		<string>swift</string>
+		<key>Provider</key>
+		<string>keystone3</string>
+		<key>Nickname</key>
+		<string>${document.getElementById("cont").value}</string>
+		<key>UUID</key>
+		<string>${uuidv4()}</string>
+		<key>Hostname</key>
+		<string>ksproxy.cscs.ch</string>
+		<key>Port</key>
+		<string>13000</string>
+		<key>Username</key>
+		<string>${getProject()}:cscs:${document.getElementById("usr").value}</string>
+		<key>Path</key>
+		<string>/${document.getElementById("cont").value}</string>
+		<key>Access Timestamp</key>
+		<string>${Date.now()}</string>
+	</dict>
+</plist>`;
+                return xml;
+            }
+
+            function saveFile(){
+                let blob = new Blob([genXML()], {type: "text/xml"});
+                let url = URL.createObjectURL(blob);
+                let a = document.createElement("a");
+                a.href = url;
+                let fname = document.getElementById("cont").value + "-" + document.getElementById("usr").value + ".duck"
+                a.download = fname;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        </script>
+    </head>
+
+    <body>
+        <h1 style="text-align: center; color:#fecd07;">Duckmarker</h2>
+        <h2 style="text-align: center; color:#f2f2f2;">Generate your CSCS bookmark for Cyberduck</h2>
+        <br/>
+        <div class="container" style="width: 650px;">
+            <div class="row" style="width: 600px">
+                <div class="col-40">
+                    <label for="sp">Select HBP subproject (SP): </label>
+                </div>
+                <div class="col-60">                    
+                    <input type="text" list="projects" name="sp" id="sp">
+                    <datalist id="projects">
+                      <option value="SP1">
+                      <option value="SP2">
+                      <option value="SP3">
+                      <option value="SP4">
+                      <option value="SP5">
+                      <option value="SP6">
+                      <option value="SP8">
+                      <option value="External">
+                    </datalist>                  
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-40">
+                    <label for="usr">CSCS user name: </label>
+                </div>
+                <div class="col-60">
+                    <input type="text" id="usr" name="usr">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-40">
+                    <label for="cont">Container name: </label>
+                </div>
+                <div class="col-60">
+                    <input type="text" id="cont" name="cont">
+                </div>
+            </div>
+
+            <div class="row" style="text-align: center">
+                <input type="submit" value="Save bookmark" onclick="saveFile()">
+            </div>
+        </div>    
+    </body>
 </html>
