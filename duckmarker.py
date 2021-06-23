@@ -27,7 +27,7 @@ SPdict = {"SP1": "bp00sp01",
           "EBRAINS": "ebrain01"}
 
 xmldict = {"Protocol": "swift",
-            "Provider": "keystone3",
+            "Provider": "openstack-keystone3",
             "Nickname": "",
             "UUID": "",
             "Hostname": "ksproxy.cscs.ch",
