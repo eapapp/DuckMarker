@@ -15,8 +15,7 @@ from datetime import datetime
 mainpane = None
 optvar = None
 
-SPdict = {"ebrain01": "ebrain01",
-          "SP1": "bp00sp01",
+SPdict = {"SP1": "bp00sp01",
           "SP2": "bp00sp02",
           "SP3": "bp00sp03",
           "SP4": "bp00sp04",
