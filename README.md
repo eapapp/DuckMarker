@@ -2,6 +2,8 @@
 
 DuckMarker is a utility for generating Cyberduck bookmarks that point to CSCS containers created for sharing data in the Human Brain Project on the [EBRAINS](https://ebrains.eu/services/data-knowledge/share-data/) platform.
 
+Click [here](https://eapapp.github.io/DuckMarker/) to run it directly from your browser, or read on for the Python instructions.
+
 ![](DuckMarker.png)
 
 ## Usage
